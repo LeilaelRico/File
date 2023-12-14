@@ -20,27 +20,30 @@ def logic(i):
         print(i)
         return i
 
-#Split the content in each word
+# Split the content in each word
 def insertdic(parsed_document,files):
     res = parsed_document.split() 
     for i in res: 
         #kw = logic(i)
         print(i)
-        if (index.has_key(i) == False):
+        if (index.has_key(i) == True):
+            index[i].append(files)
+        elif(index.has_key(i) == False):
             index[i] = files
-
+            
 
 
 # folderPath = '.\\corpus' 
-folderPath = '.\\corpus\\'
+folderPath = '.\\pr\\'
 corpusFiles = [file for file in os.listdir(folderPath)]
 
 index = {}
 i = 0
 
-#Read all the content for each file in the directory
+# Read all the content for each file in the directory
 for files in corpusFiles:
-    path = '.\\corpus\\'+ files
+    # path = '.\\corpus\\'+ files
+    path = '.\\pr\\'+ files
     parsed_document = parser.from_file(path)
     print(parsed_document['content'])
     insertdic(parsed_document['content'],files)
