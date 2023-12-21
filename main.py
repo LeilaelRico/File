@@ -9,7 +9,6 @@
 import os
 from tika import parser
 import math
-# from sklearn.feature_extraction.text import TfidfVectorizer as tfidf
 
 
 def Result(IDF):
@@ -19,7 +18,6 @@ def Result(IDF):
 
 
 def TF_Process(kw, files):
-    # for document in index[kw]:
     repeats = index[kw]
     for lst in repeats:
         if (files in lst):
@@ -30,7 +28,7 @@ def TF_Process(kw, files):
 def IDF_Process(kw, size_files):
     number_files = len(index[kw])
     if (number_files != 0):
-        return math.log((size_files/number_files),2)
+        return math.log((size_files/number_files), 2)
     return 0
 
 
@@ -42,14 +40,10 @@ def filter(i):
     # Remove any special characters somehow
     if (len(i) > 3):
         if (i in stop_words):
-            # print('Stop Words ' + i)
             return 'falso'
-            # return i.replace(i, '')
         else:
             if (i in special_char):
-                # print('Caracter Especial ' + i)
                 return 'falso'
-                # return i.replace(i, '')
             else:
                 return i
 
@@ -58,25 +52,21 @@ def insert_index(parsed_document, files, consulta):
     if (parsed_document != None):
         res = parsed_document.split()
         for i in res:
-            if(i == consulta):
+            if (i == consulta):
                 repetitions = parsed_document.count(i)
                 kw = filter(i)
                 if (kw != 'falso'):
                     # if key word already exists in the index just add the file
                     if (kw in index):
                         repeats = index[kw]
-                        #print('R L 67: ')
-                        #print(repeats)
                         for lst in repeats:
-                            #print('Lst L 70')
-                            #print(lst)
                             if (files not in lst and files not in visited[kw]):
-                                visited[kw] += (' '+ files)
+                                visited[kw] += (' ' + files)
                                 index[kw].extend([[files, repetitions]])
                     # if key word hasn't being inserted in the index
                     elif (kw not in index):
                         index[kw] = [[files, repetitions]]
-                        visited[kw]= files
+                        visited[kw] = files
 
 
 def readfiles(folderPath, kw):
@@ -84,7 +74,7 @@ def readfiles(folderPath, kw):
     # Read all the content for each file in the directory
     size_files = len(corpusFiles)
     for files in corpusFiles:
-        path = '.\\corpus\\'+ files
+        path = '.\\corpus\\' + files
         # path = '.\\pr\\' + files
         parsed_document = parser.from_file(path)
         insert_index(parsed_document['content'], files, kw)
@@ -97,11 +87,11 @@ def readfiles(folderPath, kw):
 def main():
     folderPath = '.\\corpus'
     # folderPath = '.\\pr\\'
-    print('Adios Jesus Alejandro')
+    print('*** Information Retrieval Project ***')
     consulta = 'Milky'
     readfiles(folderPath, consulta)
     print('Resultado:')
-    sorted_results = sorted(result.items(), key=lambda x:x[1], reverse=True)
+    sorted_results = sorted(result.items(), key=lambda x: x[1], reverse=True)
     converted_dict = dict(sorted_results)
     counter = 0
     for i in converted_dict.keys():
@@ -110,6 +100,7 @@ def main():
         counter += 1
         if (counter > 20):
             break
+
 
 visited = {}
 result = []
