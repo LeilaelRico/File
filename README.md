@@ -5,5 +5,5 @@ El programa indexa un conjunto de documentos para, posteriormente, permitir la b
 
 ## Dependencias Necesarias
 
-El programa está hecho en _Python_ y su ejecución requiere algunas dependecias.
+El programa está hecho en _Python_ y su ejecución requiere algunas dependencias.
 > `pip install tika`
