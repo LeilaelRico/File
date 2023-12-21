@@ -54,27 +54,29 @@ def filter(i):
                 return i
 
 
-def insert_index(parsed_document, files):
-    res = parsed_document.split()
-    for i in res:
-        repetitions = parsed_document.count(i)
-        kw = filter(i)
-        if (kw != 'falso'):
-            # if key word already exists in the index just add the file
-            if (kw in index):
-                repeats = index[kw]
-                #print('R L 67: ')
-                #print(repeats)
-                for lst in repeats:
-                    #print('Lst L 70')
-                    #print(lst)
-                    if (files not in lst and files not in visited[kw]):
-                        visited[kw] += (' '+ files)
-                        index[kw].extend([[files, repetitions]])
-            # if key word hasn't being inserted in the index
-            elif (kw not in index):
-                index[kw] = [[files, repetitions]]
-                visited[kw]= files
+def insert_index(parsed_document, files, consulta):
+    if (parsed_document != None):
+        res = parsed_document.split()
+        for i in res:
+            if(i == consulta):
+                repetitions = parsed_document.count(i)
+                kw = filter(i)
+                if (kw != 'falso'):
+                    # if key word already exists in the index just add the file
+                    if (kw in index):
+                        repeats = index[kw]
+                        #print('R L 67: ')
+                        #print(repeats)
+                        for lst in repeats:
+                            #print('Lst L 70')
+                            #print(lst)
+                            if (files not in lst and files not in visited[kw]):
+                                visited[kw] += (' '+ files)
+                                index[kw].extend([[files, repetitions]])
+                    # if key word hasn't being inserted in the index
+                    elif (kw not in index):
+                        index[kw] = [[files, repetitions]]
+                        visited[kw]= files
 
 
 def readfiles(folderPath, kw):
@@ -82,25 +84,32 @@ def readfiles(folderPath, kw):
     # Read all the content for each file in the directory
     size_files = len(corpusFiles)
     for files in corpusFiles:
-        # path = '.\\corpus\\'+ files
-        path = '.\\pr\\' + files
+        path = '.\\corpus\\'+ files
+        # path = '.\\pr\\' + files
         parsed_document = parser.from_file(path)
-        insert_index(parsed_document['content'], files)
+        insert_index(parsed_document['content'], files, kw)
         weights[files] = TF_Process(kw, files)
+        print(files)
     IDF = IDF_Process(kw, size_files)
     Result(IDF)
 
 
 def main():
-    # folderPath = '.\\corpus'
-    folderPath = '.\\pr\\'
-    print('Hola mi nombre es Jesus Alejandro')
+    folderPath = '.\\corpus'
+    # folderPath = '.\\pr\\'
+    print('Adios Jesus Alejandro')
     consulta = 'Milky'
     readfiles(folderPath, consulta)
     print('Resultado:')
-    for i in result.keys():
+    sorted_results = sorted(result.items(), key=lambda x:x[1], reverse=True)
+    converted_dict = dict(sorted_results)
+    counter = 0
+    for i in converted_dict.keys():
         print(i)
         print(result[i])
+        counter += 1
+        if (counter > 20):
+            break
 
 visited = {}
 result = []
