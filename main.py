@@ -61,10 +61,10 @@ def insert_index(parsed_document, files):
                     for lst in repeats:
                         if (files not in lst and files not in visited[kw]):
                             visited[kw] += (' ' + files)
-                            index[kw].extend([[files, repetitions]])
+                            index[kw].extend([[files , repetitions]])
                 # if key word hasn't being inserted in the index
                 elif (kw not in index):
-                    index[kw] = [[files, repetitions]]
+                    index[kw] = [[files ,  repetitions]]
                     visited[kw] = files
 
 
@@ -86,6 +86,7 @@ def readIndex(indexJSON, kw, size_files):
                 # print(files)
                 weights[files] = TF_Process(indexJSON, kw, files)
                 break
+
             IDF = IDF_Process(indexJSON, kw, size_files)
             Result(IDF)
     else:
@@ -144,7 +145,6 @@ def main():
             ans = False
         elif ans != "":
             print("\n Invalid Choice, Try Again")
-
 
 indexJSON = {}
 visited = {}
